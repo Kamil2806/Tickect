@@ -12,7 +12,7 @@ import java.util.Optional;
 @RequestMapping("/greeting/")
 public class Greeting {
 
-    @GetMapping("{name}")
+    @GetMapping({"", "/{name}"})
     public String greetPerson(@PathVariable(name = "name", required = false) Optional<String> maybeName) {
         String name = maybeName.filter(Strings::isNotBlank).orElse("unknown name");
         return "Hello " + name;

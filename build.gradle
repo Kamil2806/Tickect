@@ -7,11 +7,10 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'com.app'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = '1.11'
 
 repositories {
 	jcenter()
-	maven { url "http://jcenter.bintray.com"}
 }
 
 dependencies {
@@ -20,7 +19,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly group: 'mysql', name: 'mysql-connector-java', version: '5.1.27'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	implementation group: 'ch.vorburger.mariaDB4j', name: 'mariaDB4j', version: '2.4.0'
+    implementation group: 'org.liquibase', name: 'liquibase-core', version: '3.6.3'
 }
