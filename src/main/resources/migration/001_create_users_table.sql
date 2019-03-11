@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset author:kserafin context:development
+--changeset author:jderda
 CREATE TABLE `users` (
   `email` VARCHAR(254) NOT NULL PRIMARY KEY,
   `passwordHash` VARCHAR(60) NOT NULL,
