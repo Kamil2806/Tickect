@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -19,13 +20,16 @@ import javax.sql.DataSource;
 public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     private final DataSource dataSource;
-
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public Oauth2AuthServerConfig(DataSource dataSource, AuthenticationManager authenticationManager) {
+    public Oauth2AuthServerConfig(DataSource dataSource,
+                                  AuthenticationManager authenticationManager,
+                                  PasswordEncoder bCryptPasswordEncoder) {
         this.dataSource = dataSource;
         this.authenticationManager = authenticationManager;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -40,8 +44,8 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
         clients
                 .inMemory()
                 .withClient("frontendClientId")
-                .secret("frontendClientSecret")
-                .authorizedGrantTypes("password","authorization_code", "refresh_token")
+                .secret(this.bCryptPasswordEncoder.encode("frontendClientSecret"))
+                .authorizedGrantTypes("client_credentials", "password", "authorization_code", "refresh_token")
                 .accessTokenValiditySeconds(3600)
                 .refreshTokenValiditySeconds(28*24*3600)
                 .scopes("read");
